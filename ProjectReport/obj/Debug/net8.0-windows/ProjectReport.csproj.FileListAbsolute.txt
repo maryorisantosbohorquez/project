@@ -25,3 +25,4 @@ C:\DEV\reportManager\ProjectReport\obj\Debug\net8.0-windows\refint\ProjectReport
 C:\DEV\reportManager\ProjectReport\obj\Debug\net8.0-windows\ProjectReport.pdb
 C:\DEV\reportManager\ProjectReport\obj\Debug\net8.0-windows\ProjectReport.genruntimeconfig.cache
 C:\DEV\reportManager\ProjectReport\obj\Debug\net8.0-windows\ref\ProjectReport.dll
+C:\DEV\reportManager\ProjectReport\obj\Debug\net8.0-windows\ProjectReport.sourcelink.json
