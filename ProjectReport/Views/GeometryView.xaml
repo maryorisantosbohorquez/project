@@ -1,0 +1,347 @@
+<UserControl x:Class="ProjectReport.Views.GeometryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid Background="{StaticResource AppBackgroundBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>   <!-- Header -->
+            <RowDefinition Height="*"/>      <!-- Tabs -->
+        </Grid.RowDefinitions>
+
+        <!-- ================= CABECERA: WELL + REPORT ================= -->
+        <Border Grid.Row="0"
+                Background="{StaticResource WhiteBrush}"
+                Padding="12"
+                BorderBrush="{StaticResource LightGrayBrush}"
+                BorderThickness="0,0,0,1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- WELL -->
+                <StackPanel Grid.Column="0" Orientation="Vertical" Margin="0,0,12,0">
+                    <TextBlock Text="Well"
+                               FontSize="12"
+                               Foreground="{StaticResource DarkGrayBrush}"/>
+                    <TextBox Height="26"
+                             Padding="4,2"
+                             BorderBrush="{StaticResource LightGrayBrush}"
+                             Background="{StaticResource WhiteBrush}"/>
+                </StackPanel>
+
+                <!-- REPORT NUMBER -->
+                <StackPanel Grid.Column="1" Orientation="Vertical" Margin="0,0,12,0">
+                    <TextBlock Text="Report Number"
+                               FontSize="12"
+                               Foreground="{StaticResource DarkGrayBrush}"/>
+                    <TextBox Height="26"
+                             Padding="4,2"
+                             BorderBrush="{StaticResource LightGrayBrush}"
+                             Background="{StaticResource WhiteBrush}"/>
+                </StackPanel>
+
+                <!-- LABEL GEOMETRY -->
+                <StackPanel Grid.Column="2"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center">
+                    <TextBlock Text="GEOMETRY MODULE"
+                               FontSize="14"
+                               FontWeight="Bold"
+                               Foreground="{StaticResource PrimaryOrangeBrush}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- ================= CUERPO: TABCONTROL ================= -->
+        <Border Grid.Row="1"
+                Margin="12"
+                Background="{StaticResource WhiteBrush}"
+                BorderBrush="{StaticResource LightGrayBrush}"
+                BorderThickness="1"
+                CornerRadius="6">
+            <TabControl Margin="8">
+                <!-- ========== TAB 1: WELLBORE GEOMETRY ========== -->
+                <TabItem Header="WELLBORE GEOMETRY">
+                    <Grid Margin="4">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Tabla principal de secciones -->
+                        <DataGrid Grid.Row="0"
+                                  AutoGenerateColumns="False"
+                                  HeadersVisibility="Column"
+                                  CanUserAddRows="True"
+                                  CanUserDeleteRows="True"
+                                  Margin="0,0,0,8"
+                                  BorderBrush="{StaticResource LightGrayBrush}"
+                                  BorderThickness="1">
+                            <DataGrid.Columns>
+                                <!-- Section Type -->
+                                <DataGridComboBoxColumn Header="Section Type"
+                                                        Width="120"
+                                                        SelectedItemBinding="{Binding SectionType}">
+                                    <DataGridComboBoxColumn.ElementStyle>
+                                        <Style TargetType="ComboBox">
+                                            <Setter Property="ItemsSource"
+                                                    Value="{Binding RelativeSource={RelativeSource AncestorType=DataGrid}, Path=Tag}"/>
+                                        </Style>
+                                    </DataGridComboBoxColumn.ElementStyle>
+                                </DataGridComboBoxColumn>
+
+                                <DataGridTextColumn Header="Name" Width="100" Binding="{Binding Name}"/>
+                                <DataGridTextColumn Header="ID (in)" Width="80" Binding="{Binding ID}"/>
+                                <DataGridTextColumn Header="OD (in)" Width="80" Binding="{Binding OD}"/>
+                                <DataGridTextColumn Header="Top MD (ft)" Width="100" Binding="{Binding TopMD}"/>
+                                <DataGridTextColumn Header="Bottom MD (ft)" Width="110" Binding="{Binding BottomMD}"/>
+                                <DataGridTextColumn Header="Volume (bbl)" Width="110" Binding="{Binding Volume}" IsReadOnly="True"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <!-- Nota de validación -->
+                        <TextBlock Grid.Row="1"
+                                   Text="Regla: Si Section Type es 'Open Hole', el diámetro no debe ser mayor a 40 in."
+                                   FontSize="11"
+                                   Foreground="{StaticResource DarkGrayBrush}"
+                                   Margin="2,0,2,4"/>
+                    </Grid>
+                </TabItem>
+
+                <!-- ========== TAB 2: DRILL STRING GEOMETRY ========== -->
+                <TabItem Header="DRILL STRING GEOMETRY">
+                    <Grid Margin="4">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="2*"/>  <!-- Componentes -->
+                            <RowDefinition Height="Auto"/> <!-- Label config -->
+                            <RowDefinition Height="*"/>    <!-- Config extra -->
+                        </Grid.RowDefinitions>
+
+                        <!-- Tabla de componentes de sarta -->
+                        <DataGrid Grid.Row="0"
+                                  AutoGenerateColumns="False"
+                                  HeadersVisibility="Column"
+                                  CanUserAddRows="True"
+                                  CanUserDeleteRows="True"
+                                  Margin="0,0,0,8"
+                                  BorderBrush="{StaticResource LightGrayBrush}"
+                                  BorderThickness="1">
+                            <DataGrid.Columns>
+                                <DataGridComboBoxColumn Header="Component"
+                                                        Width="140"
+                                                        SelectedItemBinding="{Binding ComponentType}">
+                                    <!-- Aquí luego se le asigna ItemsSource desde VM -->
+                                </DataGridComboBoxColumn>
+
+                                <DataGridTextColumn Header="Name" Width="120" Binding="{Binding Name}"/>
+                                <DataGridTextColumn Header="Length (ft)" Width="90" Binding="{Binding Length}"/>
+                                <DataGridTextColumn Header="OD (in)" Width="80" Binding="{Binding OD}"/>
+                                <DataGridTextColumn Header="ID (in)" Width="80" Binding="{Binding ID}"/>
+                                <DataGridTextColumn Header="Volume (bbl)" Width="100" Binding="{Binding Volume}" IsReadOnly="True"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <!-- Label de configuración extra -->
+                        <TextBlock Grid.Row="1"
+                                   Text="Propiedades específicas por componente"
+                                   FontSize="12"
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource DarkGrayBrush}"
+                                   Margin="0,4"/>
+
+                        <!-- Panel de configuración adicional -->
+                        <Grid Grid.Row="2" Margin="0,4,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- TUBULAR COMPONENT PROPERTIES -->
+                            <GroupBox Header="Tubular Component Properties"
+                                      FontSize="12"
+                                      Margin="0,0,8,0">
+                                <Grid Margin="4">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Weight (lbm/ft)" Margin="0,0,4,4"/>
+                                    <TextBox Grid.Row="0" Grid.Column="1" Height="22" Margin="0,0,0,4"/>
+
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Tool Joint OD (in)" Margin="0,0,4,4"/>
+                                    <TextBox Grid.Row="1" Grid.Column="1" Height="22" Margin="0,0,0,4"/>
+
+                                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Tool Joint ID (in)" Margin="0,0,4,4"/>
+                                    <TextBox Grid.Row="2" Grid.Column="1" Height="22" Margin="0,0,0,4"/>
+
+                                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Tool Joint Length (ft)" Margin="0,0,4,0"/>
+                                    <TextBox Grid.Row="3" Grid.Column="1" Height="22"/>
+                                </Grid>
+                            </GroupBox>
+
+                            <!-- PRESSURE DROP CONFIGURATION -->
+                            <GroupBox Header="Pressure Drop Configuration"
+                                      Grid.Column="1"
+                                      FontSize="12"
+                                      Margin="0,0,8,0">
+                                <Grid Margin="4">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Pressure Drop (psi)" Margin="0,0,4,4"/>
+                                    <TextBox Grid.Row="0" Grid.Column="1" Height="22" Margin="0,0,0,4"/>
+
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Mup Density (ppg)" Margin="0,0,4,4"/>
+                                    <TextBox Grid.Row="1" Grid.Column="1" Height="22" Margin="0,0,0,4"/>
+
+                                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Flow Rate (gpm)" Margin="0,0,4,0"/>
+                                    <TextBox Grid.Row="2" Grid.Column="1" Height="22"/>
+                                </Grid>
+                            </GroupBox>
+
+                            <!-- CONFIGURE JETS (BIT) -->
+                            <GroupBox Header="Configure Jets (Bit)"
+                                      Grid.Column="2"
+                                      FontSize="12">
+                                <Grid Margin="4">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Number of Jets" Margin="0,0,4,4"/>
+                                    <TextBox Grid.Row="0" Grid.Column="1" Height="22" Margin="0,0,0,4"/>
+
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Diameter (32nds)" Margin="0,0,4,4"/>
+                                    <TextBox Grid.Row="1" Grid.Column="1" Height="22" Margin="0,0,0,4"/>
+
+                                    <TextBlock Grid.Row="2" Grid.Column="0" Text="TFA (in²)" Margin="0,0,4,0"/>
+                                    <TextBox Grid.Row="2" Grid.Column="1" Height="22" IsReadOnly="True"/>
+                                </Grid>
+                            </GroupBox>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+
+                <!-- ========== TAB 3: SURVEY ========== -->
+                <TabItem Header="SURVEY">
+                    <Grid Margin="4">
+                        <DataGrid AutoGenerateColumns="False"
+                                  HeadersVisibility="Column"
+                                  CanUserAddRows="True"
+                                  CanUserDeleteRows="True"
+                                  BorderBrush="{StaticResource LightGrayBrush}"
+                                  BorderThickness="1">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Section MD (ft)" Width="120" Binding="{Binding SectionMD}"/>
+                                <DataGridTextColumn Header="TVD (ft)" Width="100" Binding="{Binding TVD}"/>
+                                <DataGridTextColumn Header="Hole Angle (deg)" Width="120" Binding="{Binding HoleAngle}"/>
+                                <DataGridTextColumn Header="Azimuth (deg)" Width="120" Binding="{Binding Azimuth}"/>
+                                <DataGridTextColumn Header="Horizontal Disp. (ft)" Width="140" Binding="{Binding HorizontalDisplacement}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </TabItem>
+
+                <!-- ========== TAB 4: WELL TEST ========== -->
+                <TabItem Header="WELL TEST">
+                    <Grid Margin="4">
+                        <DataGrid AutoGenerateColumns="False"
+                                  HeadersVisibility="Column"
+                                  CanUserAddRows="True"
+                                  CanUserDeleteRows="True"
+                                  BorderBrush="{StaticResource LightGrayBrush}"
+                                  BorderThickness="1">
+                            <DataGrid.Columns>
+                                <DataGridComboBoxColumn Header="Section" Width="140" SelectedItemBinding="{Binding Section}"/>
+                                <DataGridComboBoxColumn Header="Type" Width="140" SelectedItemBinding="{Binding ComponentType}"/>
+                                <DataGridTextColumn Header="Test Value (ppb)" Width="140" Binding="{Binding TestValue}"/>
+                                <DataGridComboBoxColumn Header="Test Type" Width="160" SelectedItemBinding="{Binding TestType}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </TabItem>
+
+                <!-- ========== TAB 5: SUMMARY ========== -->
+                <TabItem Header="SUMMARY">
+                    <Grid Margin="4">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Resumen numérico -->
+                        <StackPanel Grid.Row="0"
+                                    Orientation="Horizontal"
+                                    Margin="0,0,0,8">
+                            <StackPanel Margin="0,0,16,0">
+                                <TextBlock Text="Total Wellbore Volume (bbl)"
+                                           FontSize="12"
+                                           Foreground="{StaticResource DarkGrayBrush}"/>
+                                <TextBlock Text="0.0"
+                                           FontSize="16"
+                                           FontWeight="Bold"/>
+                            </StackPanel>
+
+                            <StackPanel Margin="0,0,16,0">
+                                <TextBlock Text="Total Drill String Volume (bbl)"
+                                           FontSize="12"
+                                           Foreground="{StaticResource DarkGrayBrush}"/>
+                                <TextBlock Text="0.0"
+                                           FontSize="16"
+                                           FontWeight="Bold"/>
+                            </StackPanel>
+
+                            <StackPanel>
+                                <TextBlock Text="Total Annular Volume (bbl)"
+                                           FontSize="12"
+                                           Foreground="{StaticResource DarkGrayBrush}"/>
+                                <TextBlock Text="0.0"
+                                           FontSize="16"
+                                           FontWeight="Bold"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <!-- Esquema visual -->
+                        <Border Grid.Row="1"
+                                Background="{StaticResource AppBackgroundBrush}"
+                                BorderBrush="{StaticResource LightGrayBrush}"
+                                BorderThickness="1"
+                                CornerRadius="6"
+                                Padding="16">
+                            <TextBlock Text="Aquí irá el esquema visual de la geometría del pozo (Wellbore, Drill String, Annular, etc.)."
+                                       TextWrapping="Wrap"
+                                       Foreground="{StaticResource DarkGrayBrush}"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"/>
+                        </Border>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Border>
+    </Grid>
+</UserControl>

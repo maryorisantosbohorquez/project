@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <!-- Evita la inclusión implícita de archivos XAML para poder listarlos explícitamente -->
+    <EnableDefaultPageItems>false</EnableDefaultPageItems>
+  </PropertyGroup>
+
+  <!-- Incluir explícitamente las páginas/XAML del proyecto para evitar duplicados -->
+  <ItemGroup>
+    <Page Include="Resources\Colors.xaml" />
+    <Page Include="Views\GeometryView.xaml" />
+    <Page Include="Views\HomeView.xaml" />
+    <Page Include="Views\MainWindow.xaml" />
+    <Page Include="Views\WellDataView.xaml" />
+  </ItemGroup>
+
+</Project>
